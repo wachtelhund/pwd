@@ -7,5 +7,6 @@ import './components/memory-game/'
  */
 const body = document.querySelector('body')
 const game = document.createElement('memory-game')
+game.setAttribute('size', 'lg')
 body.appendChild(game)
 console.log('TODO: Start working on the assignment')

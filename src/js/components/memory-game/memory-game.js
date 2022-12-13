@@ -2,8 +2,12 @@ import './memory-card/'
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
-    div {
-      width: max(700px);
+    #gameRoot {
+      border: 2px solid black;
+      width: min-content;
+    }
+    #cardcontainer {
+      width: 640px;
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;
@@ -17,12 +21,38 @@ template.innerHTML = `
     .scaledown {
       transform: scale(0);
     }
+    .spin {
+      transform: rotate(360deg);
+    }
+    form {
+      display: inline-block;
+    }
+    p {
+      display: inline-block;
+      font-size: 24px;
+    }
+    button {
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 24px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    button>img {
+      transition: 500ms all ease;
+    }
   </style>
+  <div id="gameRoot">
   <div id="cardcontainer"></div>
   <form>
-    <button id="reset">Reset game</button>
+    <button id="reset">Reset game <img id="reseticon" src="../../images/reset.png"/></button>
   </form>
   <p id="attempts"></p>
+  </div>
 `
 
 customElements.define('memory-game',
@@ -60,8 +90,9 @@ customElements.define('memory-game',
       })
       this.shadowRoot.querySelector('form').addEventListener('submit', (event) => {
         event.preventDefault()
+        const icon = this.shadowRoot.querySelector('#reseticon')
+        icon.classList.toggle('spin')
         this.#resetGame()
-        this.#resetCards()
       })
     }
 
@@ -117,20 +148,12 @@ customElements.define('memory-game',
           }, 500)
         }
       }
-      this.#attemptsP.textContent = this.#attempts
-      console.log(this.#attempts);
-    }
-
-    #resetCards () {
-      for (const card of this.#cardContainer.querySelectorAll('memory-card')) {
-        card.removeAttribute('flipped')
-      }
-      this.#flippedCharacters = []
+      this.#attemptsP.textContent = `Number of attempts: ${this.#attempts}`
     }
 
     #resetGame () {
       this.#attempts = 0
-      this.#attemptsP.textContent = 0
+      this.#attemptsP.textContent = 'Number of attempts: 0'
       this.#matchedCards.clear()
       while (this.#cardContainer.firstChild) {
         this.#cardContainer.removeChild(this.#cardContainer.firstChild)
@@ -143,7 +166,6 @@ customElements.define('memory-game',
           cards.push(card)
         }
       }
-      cards.sort(() => Math.random() - 0.5)
       cards.sort(() => Math.random() - 0.5)
       const fragment = new DocumentFragment()
       cards.map((card) => fragment.appendChild(card))
@@ -178,6 +200,7 @@ customElements.define('memory-game',
             break
         }
         this.#activeCharacters = this.#characters.slice(0, limit)
+        this.#resetGame()
       }
     }
   })
