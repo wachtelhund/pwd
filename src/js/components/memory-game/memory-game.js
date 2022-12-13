@@ -56,15 +56,48 @@ template.innerHTML = `
 `
 
 customElements.define('memory-game',
+  /**
+   * A custom element for a memory game.
+   */
   class extends HTMLElement {
+    /**
+     * Number of attempts used.
+     */
     #attempts
+    /**
+     * Div element containing the memory cards generated.
+     */
     #cardContainer
+    /**
+     * Characters available.
+     */
     #characters
+    /**
+     * Cards that are currently flipped.
+     */
     #flippedCharacters = []
+    /**
+     * Cards that have been matched.
+     */
     #matchedCards = new Set()
+    /**
+     * Flag used to signal if the eventlistener for click should be ignored temporarily.
+     */
     #waiting = false
+    /**
+     * Paragraph element showing the number of attempts.
+     */
     #attemptsP
+    /**
+     * Active characters depending on the size of the game.
+     */
     #activeCharacters
+    /**
+     * Creates a new `MemoryGame` element.
+     *
+     * The constructor sets up the shadow DOM for the element, assigns some class properties,
+     * and adds event listeners for clicking on cards and resetting the game.
+     */
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
@@ -96,6 +129,12 @@ customElements.define('memory-game',
       })
     }
 
+    /**
+     * Returns an array of `memory-card` elements that have the specified character name.
+     *
+     * @param {string} name - The character name to search for.
+     * @returns {HTMLElement[]} An array of matching `memory-card` elements.
+     */
     #findCardsByName (name) {
       const cards = this.shadowRoot.querySelectorAll('memory-card')
       const matchingCards = []
@@ -107,6 +146,14 @@ customElements.define('memory-game',
       return matchingCards
     }
 
+    /**
+     * Flips a card and checks if it matches any other flipped cards.
+     * Increments the number of attempts and updates the display.
+     * Hides matching cards and if the player guesses right.
+     * Resets card if player guesses wrong.
+     *
+     * @param {HTMLElement} memoryCard The card to flip.
+     */
     #flipCard (memoryCard) {
       if (!memoryCard.hasAttribute('flipped')) {
         memoryCard.toggleAttribute('flipped')
@@ -151,6 +198,10 @@ customElements.define('memory-game',
       this.#attemptsP.textContent = `Number of attempts: ${this.#attempts}`
     }
 
+    /**
+     * Resets the game by resetting the number of attempts, clearing the matched cards,
+     * creating new cards, and shuffling the cards.
+     */
     #resetGame () {
       this.#attempts = 0
       this.#attemptsP.textContent = 'Number of attempts: 0'
@@ -172,6 +223,10 @@ customElements.define('memory-game',
       this.#cardContainer.appendChild(fragment)
     }
 
+    /**
+     * Executes when the `memory-game` element is added to the DOM.
+     * Sets the default size of the game if the `size` attribute is not set and resets the game.
+     */
     connectedCallback () {
       if (!this.hasAttribute('size')) {
         this.setAttribute('size', 'md')
@@ -179,10 +234,22 @@ customElements.define('memory-game',
       this.#resetGame()
     }
 
+    /**
+     * An array of attributes to watch for changes.
+     *
+     * @returns {string[]} An array of attribute names.
+     */
     static get observedAttributes () {
       return ['size']
     }
 
+    /**
+     * Handles changes to the `size` attribute of the `memory-game` element.
+     *
+     * @param {string} name The name of the attribute.
+     * @param {string} oldValue The previous value of the attribute.
+     * @param {string} newValue The new value of the attribute.
+     */
     attributeChangedCallback (name, oldValue, newValue) {
       if (name === 'size' && newValue !== oldValue) {
         let limit = 4
