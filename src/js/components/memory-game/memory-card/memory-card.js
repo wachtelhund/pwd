@@ -22,7 +22,6 @@ template.innerHTML = `
 customElements.define('memory-card',
   class extends HTMLElement {
     #rootSpan
-    #images
     #characters
     #character
     constructor () {
