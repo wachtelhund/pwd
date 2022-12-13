@@ -1,3 +1,7 @@
+/**
+ * @author Hampus Nilsson <hn222te@student.lnu.se>
+ * @version 1.0.0
+ */
 import './memory-card/'
 const template = document.createElement('template')
 template.innerHTML = `
@@ -93,7 +97,7 @@ customElements.define('memory-game',
      */
     #activeCharacters
     /**
-     * Creates a new `MemoryGame` element.
+     * Creates a new `memory-game` element.
      *
      * The constructor sets up the shadow DOM for the element, assigns some class properties,
      * and adds event listeners for clicking on cards and resetting the game.
@@ -162,7 +166,6 @@ customElements.define('memory-game',
       if (this.#flippedCharacters.length > 1) {
         this.#attempts++
         if (this.#flippedCharacters[0] === memoryCard.character) {
-          // Player guesses right.
           this.#matchedCards.add(memoryCard.character)
           const cardsToHide = this.#findCardsByName(Array.from(this.#matchedCards).pop())
           this.#waiting = true
@@ -180,10 +183,11 @@ customElements.define('memory-game',
           }, 700)
           this.#flippedCharacters = []
           if (this.#matchedCards.size === this.#activeCharacters.length) {
+            // TODO: Make player happy when he wins.
             // Executes when player wins the game.
+            this.#attemptsP.textContent = `You won in ${this.#attempts} attempts!`
           }
         } else {
-          // Player guesses wrong.
           this.#waiting = true
           setTimeout(() => {
             for (const card of this.#flippedCharacters) {
@@ -195,7 +199,9 @@ customElements.define('memory-game',
           }, 500)
         }
       }
-      this.#attemptsP.textContent = `Number of attempts: ${this.#attempts}`
+      if (!this.#matchedCards.size === this.#activeCharacters.length) {
+        this.#attemptsP.textContent = `Number of attempts: ${this.#attempts}`
+      }
     }
 
     /**
