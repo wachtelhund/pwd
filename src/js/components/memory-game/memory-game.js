@@ -171,6 +171,7 @@ customElements.define('memory-game',
           this.#waiting = true
           setTimeout(() => {
             for (const card of cardsToHide) {
+              card.removeAttribute('tabindex')
               card.classList.toggle('scaledown')
             }
           }, 500)
@@ -199,7 +200,7 @@ customElements.define('memory-game',
           }, 500)
         }
       }
-      if (!this.#matchedCards.size === this.#activeCharacters.length) {
+      if (!(this.#matchedCards.size === this.#activeCharacters.length)) {
         this.#attemptsP.textContent = `Number of attempts: ${this.#attempts}`
       }
     }
@@ -223,6 +224,7 @@ customElements.define('memory-game',
           cards.push(card)
         }
       }
+      // TODO: Improve shuffling.
       cards.sort(() => Math.random() - 0.5)
       const fragment = new DocumentFragment()
       cards.map((card) => fragment.appendChild(card))

@@ -16,7 +16,7 @@ template.innerHTML = `
         }
 
     </style>
-    <span tabindex="0"></span>
+    <span></span>
 `
 
 customElements.define('memory-card',
@@ -138,5 +138,6 @@ customElements.define('memory-card',
         throw new Error(`A character must be set using memory-card.character(character) for the card to display. Possible characters: ${this.#characters}`)
       }
       this.#rootSpan.style.backgroundImage = "url('../../../../images/backside.png')"
+      this.setAttribute('tabindex', '0')
     }
   })
