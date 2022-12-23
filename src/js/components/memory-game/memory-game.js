@@ -53,7 +53,7 @@ template.innerHTML = `
   <div id="gameRoot">
   <div id="cardcontainer"></div>
   <form>
-    <button id="reset">Reset game <img id="reseticon" src="../../images/reset.png"/></button>
+    <button id="reset">Reset game <img id="reseticon" src="./images/reset.png"/></button>
   </form>
   <p id="attempts"></p>
   </div>
@@ -225,7 +225,12 @@ customElements.define('memory-game',
         }
       }
       // TODO: Improve shuffling.
-      cards.sort(() => Math.random() - 0.5)
+
+      for (let i = cards.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1))
+        ;[cards[i], cards[randomIndex]] = [cards[randomIndex], cards[i]]
+      }
+
       const fragment = new DocumentFragment()
       cards.map((card) => fragment.appendChild(card))
       this.#cardContainer.appendChild(fragment)

@@ -1,7 +1,11 @@
+/**
+ * @author Hampus Nilsson <hn222te@student.lnu.se>
+ * @version 1.0.0
+ */
 const template = document.createElement('template')
 template.innerHTML = `
     <style>
-        span {
+        img {
             display: inline-block;
             width: 150px;
             height: 150px;
@@ -16,7 +20,7 @@ template.innerHTML = `
         }
 
     </style>
-    <span></span>
+    <img/>
 `
 
 customElements.define('memory-card',
@@ -25,9 +29,9 @@ customElements.define('memory-card',
    */
   class extends HTMLElement {
     /**
-     * Span element containing the image of the backside or the character.
+     * Image element containing the image of the backside or the character.
      */
-    #rootSpan
+    #img
     /**
      * Character available.
      */
@@ -46,7 +50,7 @@ customElements.define('memory-card',
       super()
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
-      this.#rootSpan = this.shadowRoot.querySelector('span')
+      this.#img = this.shadowRoot.querySelector('img')
       this.#characters = [
         'backside',
         'hero',
@@ -89,15 +93,17 @@ customElements.define('memory-card',
     }
 
     /**
-     * Flips the card by setting the background image of the span element.
+     * Flips the card by setting the background image of the image element.
      *
      * @param {boolean} isFlipped - True is card is flipped.
      */
     #flipCard (isFlipped) {
       if (isFlipped) {
-        this.#rootSpan.style.backgroundImage = `url('../../../../images/${this.#character}.png')`
+        this.#img.setAttribute('src', `./images/${this.#character}.png`)
+        this.#img.setAttribute('alt', this.#character)
       } else {
-        this.#rootSpan.style.backgroundImage = "url('../../../../images/backside.png')"
+        this.#img.setAttribute('src', './images/backside.png')
+        this.#img.setAttribute('alt', 'backside')
       }
     }
 
@@ -119,10 +125,10 @@ customElements.define('memory-card',
      */
     attributeChangedCallback (name, oldValue, newValue) {
       if (this.hasAttribute('flipped')) {
-        this.#rootSpan.toggleAttribute('flipped')
+        this.#img.toggleAttribute('flipped')
         this.#flipCard(true)
       } else {
-        this.#rootSpan.toggleAttribute('flipped')
+        this.#img.toggleAttribute('flipped')
         this.#flipCard(false)
       }
     }
@@ -137,7 +143,8 @@ customElements.define('memory-card',
       if (!this.#character) {
         throw new Error(`A character must be set using memory-card.character(character) for the card to display. Possible characters: ${this.#characters}`)
       }
-      this.#rootSpan.style.backgroundImage = "url('../../../../images/backside.png')"
+      this.#img.setAttribute('src', './images/backside.png')
+      this.#img.setAttribute('alt', 'backside')
       this.setAttribute('tabindex', '0')
     }
   })
