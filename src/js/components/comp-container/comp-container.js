@@ -1,3 +1,4 @@
+import interact from 'interactjs'
 const template = document.createElement('template')
 template.innerHTML = `
   <div id="container-root">
@@ -7,16 +8,26 @@ template.innerHTML = `
     <slot></slot>
   </div>
   <style>
+    button{
+      width: 40px;
+    }
     #container-root {
+      margin: 10px;
       display: inline-block;
-      z-index: 1;
       transition: 300ms all;
+      background-color: white;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      border-radius: 5px;
     }
     #bar {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      display: flex;
+      justify-content: flex-end;
       background-color: green;
+      z-index: 10;
       width: 100%;
       height: 40px;
-      z-index: 2;
     }
     .fadeout {
       transform: scale(0)
@@ -43,6 +54,35 @@ customElements.define('comp-container',
       })
     }
 
+    #createOptions () {
+      for (const [optionName, options] of Object.entries(this.firstElementChild.options)) {
+        console.log('NAME: ', optionName, 'OPTIONS: ', options);
+        const select = document.createElement('select')
+        select.textContent = optionName
+        for (const selectOption of options) {
+          const option = document.createElement('option')
+          option.textContent = selectOption.toUpperCase()
+          if (this.firstElementChild.getAttribute(optionName) === selectOption) {
+            option.setAttribute('selected', true)
+          }
+          select.appendChild(option)
+        }
+        select.addEventListener('change', (event) => {
+          this.firstElementChild.setAttribute(optionName, event.target.value.toLowerCase())
+        })
+        this.#bar.appendChild(select)
+      }
+    }
+
     connectedCallback () {
+      if (this.firstElementChild.options) {
+        this.#createOptions()
+      }
+    }
+
+    disconnectedCallback () {
+      this.querySelectorAll('select').forEach((select) => {
+        select.removeEventListener('change')
+      })
     }
   })

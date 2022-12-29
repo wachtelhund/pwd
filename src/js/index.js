@@ -1,5 +1,7 @@
 import './components/memory-game/'
 import './components/comp-container/'
+import './components/app-dock/'
+import './components/launcher-icon/'
 /**
  * The main script file of the application.
  *
@@ -21,4 +23,9 @@ const game = document.createElement('memory-game')
 game.setAttribute('size', 'lg')
 const container = document.createElement('comp-container')
 container.appendChild(game)
+const dock = document.createElement('app-dock')
+const launcher = document.createElement('launcher-icon')
+launcher.setAttribute('type', 'memory-game')
+dock.appendChild(launcher)
 body.appendChild(container)
+body.appendChild(dock)

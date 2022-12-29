@@ -21,5 +21,8 @@
   "devDependencies": {
     "@lnu/eslint-config": "^1.1.7",
     "vite": "^3.2.4"
+  },
+  "dependencies": {
+    "interactjs": "^1.10.17"
   }
 }

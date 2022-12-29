@@ -1,4 +1,8 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
 body {
-	background: #ffffff;
+	background: #b9e4ff;
 	font-family: Verdana, sans-serif;
 }

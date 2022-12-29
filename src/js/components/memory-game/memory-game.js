@@ -7,7 +7,6 @@ const template = document.createElement('template')
 template.innerHTML = `
   <style>
     #gameRoot {
-      border: 2px solid black;
       width: min-content;
     }
     #cardcontainer {
@@ -53,7 +52,7 @@ template.innerHTML = `
   <div id="gameRoot">
   <div id="cardcontainer"></div>
   <form>
-    <button id="reset">Reset game <img id="reseticon" src="./images/reset.png"/></button>
+    <button id="reset">Reset game <img id="reseticon" src="./images/memory-game/reset.png"/></button>
   </form>
   <p id="attempts"></p>
   </div>
@@ -118,6 +117,7 @@ customElements.define('memory-game',
         'wolf',
         'yoshi'
       ]
+
       this.#cardContainer.addEventListener('click', (event) => {
         if (!this.#waiting) {
           if (event.target.tagName.toLowerCase() === 'memory-card') {
@@ -125,12 +125,19 @@ customElements.define('memory-game',
           }
         }
       })
+
       this.shadowRoot.querySelector('form').addEventListener('submit', (event) => {
         event.preventDefault()
         const icon = this.shadowRoot.querySelector('#reseticon')
         icon.classList.toggle('spin')
         this.#resetGame()
       })
+    }
+
+    get options () {
+      return {
+        size: ['sm', 'md', 'lg']
+      }
     }
 
     /**
