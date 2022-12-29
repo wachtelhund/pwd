@@ -1,4 +1,3 @@
-import interact from 'interactjs'
 const template = document.createElement('template')
 template.innerHTML = `
   <div id="container-root">
@@ -8,8 +7,32 @@ template.innerHTML = `
     <slot></slot>
   </div>
   <style>
-    button{
-      width: 40px;
+    button, select {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 40px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 24px;
+      background-color: rgba(47, 47, 47, 0.95);
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      color: white;
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      transition: 200ms all;
+    }
+    button, select:hover {
+      transform: scale(1.05);
+    }
+    button, select:active {
+      transform: scale(0.95);
+    }
+    select {
+      font-size: unset;
+      width: unset;
     }
     #container-root {
       margin: 10px;
@@ -24,10 +47,10 @@ template.innerHTML = `
       border-top-right-radius: 5px;
       display: flex;
       justify-content: flex-end;
-      background-color: green;
+      background-color: rgba(205, 205, 205, 0.8);
       z-index: 10;
       width: 100%;
-      height: 40px;
+      height: min-content;
     }
     .fadeout {
       transform: scale(0)
@@ -71,7 +94,8 @@ customElements.define('comp-container',
         select.addEventListener('change', (event) => {
           this.firstElementChild.setAttribute(optionName, event.target.value.toLowerCase())
         })
-        this.#bar.appendChild(select)
+        this.#bar.insertBefore(select, this.#btn)
+        //this.#bar.appendChild(select)
       }
     }
 
