@@ -56,15 +56,16 @@ customElements.define('comp-container',
 
     #createOptions () {
       for (const [optionName, options] of Object.entries(this.firstElementChild.options)) {
-        console.log('NAME: ', optionName, 'OPTIONS: ', options);
         const select = document.createElement('select')
         select.textContent = optionName
         for (const selectOption of options) {
           const option = document.createElement('option')
           option.textContent = selectOption.toUpperCase()
-          if (this.firstElementChild.getAttribute(optionName) === selectOption) {
-            option.setAttribute('selected', true)
-          }
+          setTimeout(() => {
+            if (this.firstElementChild.getAttribute(optionName) === selectOption) {
+              option.setAttribute('selected', true)
+            }
+          }, 0)
           select.appendChild(option)
         }
         select.addEventListener('change', (event) => {
