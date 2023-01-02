@@ -101,6 +101,7 @@ customElements.define('comp-container',
 
     connectedCallback () {
       if (this.firstElementChild.options) {
+        console.log('hej');
         this.#createOptions()
       }
     }

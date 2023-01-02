@@ -2,6 +2,7 @@ import './components/memory-game/'
 import './components/comp-container/'
 import './components/app-dock/'
 import './components/launcher-icon/'
+import './components/get-joke/'
 /**
  * The main script file of the application.
  *
@@ -20,12 +21,14 @@ if ('serviceWorker' in navigator) {
 }
 const body = document.querySelector('body')
 const game = document.createElement('memory-game')
-game.setAttribute('size', 'lg')
 const container = document.createElement('comp-container')
 container.appendChild(game)
 const dock = document.createElement('app-dock')
 const launcher = document.createElement('launcher-icon')
+const launcher2 = document.createElement('launcher-icon')
 launcher.setAttribute('type', 'memory-game')
+launcher2.setAttribute('type', 'get-joke')
 dock.appendChild(launcher)
+dock.appendChild(launcher2)
 body.appendChild(container)
 body.appendChild(dock)
