@@ -18,6 +18,12 @@ template.innerHTML = `
     memory-card {
       transition: 200ms all;
     }
+    .winner {
+      background-image: url('./images/memory-game/winner.gif');
+      background-size: cover;
+      background-position: center;
+      height: 400px;
+    }
     .hidden {
       visibility: none;
     }
@@ -211,6 +217,10 @@ customElements.define('memory-game',
           if (this.#matchedCards.size === this.#activeCharacters.length) {
             // TODO: Make player happy when he wins.
             // Executes when player wins the game.
+            setTimeout(() => {
+              this.#cardContainer.classList.add('winner')
+              new Audio('./images/winner.mp3').play()
+            }, 500)
             clearInterval(this.#interval)
             this.#attemptsP.textContent = `You won in ${this.#attempts} attempts!`
           }
@@ -236,6 +246,7 @@ customElements.define('memory-game',
      * creating new cards, and shuffling the cards.
      */
     #resetGame () {
+      this.#cardContainer.classList.remove('winner')
       if (this.#interval) {
         clearInterval(this.#interval)
       }
