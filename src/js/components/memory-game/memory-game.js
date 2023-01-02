@@ -55,6 +55,7 @@ template.innerHTML = `
     <button id="reset">Reset game <img id="reseticon" src="./images/memory-game/reset.png"/></button>
   </form>
   <p id="attempts"></p>
+  <p id="timer"></p>
   </div>
 `
 
@@ -101,6 +102,7 @@ customElements.define('memory-game',
      * The constructor sets up the shadow DOM for the element, assigns some class properties,
      * and adds event listeners for clicking on cards and resetting the game.
      */
+    #interval
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
@@ -134,6 +136,22 @@ customElements.define('memory-game',
       })
     }
 
+    #timer () {
+      const timer = this.shadowRoot.querySelector('#timer')
+      timer.textContent = 'Time: 0'
+      let time = 0
+      const interval = setInterval(() => {
+        time++
+        timer.textContent = `Time: ${time}`
+      }, 1000)
+      return interval
+    }
+
+    /**
+     * Returns possible sizing options for the game.
+     *
+     * @returns {object} An object with a `size` property that is an array of possible sizes.
+     */
     get options () {
       return {
         size: ['sm', 'md', 'lg']
@@ -193,6 +211,7 @@ customElements.define('memory-game',
           if (this.#matchedCards.size === this.#activeCharacters.length) {
             // TODO: Make player happy when he wins.
             // Executes when player wins the game.
+            clearInterval(this.#interval)
             this.#attemptsP.textContent = `You won in ${this.#attempts} attempts!`
           }
         } else {
@@ -217,6 +236,11 @@ customElements.define('memory-game',
      * creating new cards, and shuffling the cards.
      */
     #resetGame () {
+      if (this.#interval) {
+        clearInterval(this.#interval)
+      }
+      this.shadowRoot.querySelector('#timer').textContent = ''
+      this.#interval = this.#timer()
       this.#attempts = 0
       this.#attemptsP.textContent = 'Number of attempts: 0'
       this.#matchedCards.clear()
@@ -231,7 +255,6 @@ customElements.define('memory-game',
           cards.push(card)
         }
       }
-      // TODO: Improve shuffling.
 
       for (let i = cards.length - 1; i > 0; i--) {
         const randomIndex = Math.floor(Math.random() * (i + 1))

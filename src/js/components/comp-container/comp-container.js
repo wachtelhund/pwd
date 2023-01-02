@@ -1,3 +1,4 @@
+import interact from 'interactjs'
 const template = document.createElement('template')
 template.innerHTML = `
   <div id="container-root">
@@ -95,7 +96,6 @@ customElements.define('comp-container',
           this.firstElementChild.setAttribute(optionName, event.target.value.toLowerCase())
         })
         this.#bar.insertBefore(select, this.#btn)
-        //this.#bar.appendChild(select)
       }
     }
 
