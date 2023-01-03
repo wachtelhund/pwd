@@ -19,6 +19,7 @@ template.innerHTML = `
       width: 80%;
       margin-left: 10%;
       background-color: rgba(47, 47, 47, 0.95);
+      z-index: 101;
     }
   </style>
 `

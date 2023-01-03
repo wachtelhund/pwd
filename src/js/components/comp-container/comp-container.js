@@ -1,10 +1,10 @@
-import interact from 'interactjs'
+//import interact from 'interactjs'
 const template = document.createElement('template')
 template.innerHTML = `
   <div id="container-root">
-    <div id="bar">
-      <button>X</button>
-    </div>
+      <div id="bar">
+          <button>X</button>
+      </div>
     <slot></slot>
   </div>
   <style>
@@ -35,7 +35,9 @@ template.innerHTML = `
       font-size: unset;
       width: unset;
     }
+
     #container-root {
+      position: absolute;
       margin: 10px;
       display: inline-block;
       transition: 300ms all;
@@ -43,6 +45,11 @@ template.innerHTML = `
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       border-radius: 5px;
     }
+
+    #container-root:focus {
+      outline: none;
+    }
+
     #bar {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
@@ -53,6 +60,19 @@ template.innerHTML = `
       width: 100%;
       height: min-content;
     }
+
+    #draggable {
+      position: absolute;
+      width: 100%;
+      background-color: rgba(205, 0, 0, 0.8);
+    }
+
+    .big {
+      height: 100vh;
+      width: 100vw;
+      bottom: 0;
+    }
+
     .fadeout {
       transform: scale(0)
     }
@@ -60,21 +80,33 @@ template.innerHTML = `
 `
 customElements.define('comp-container',
   class extends HTMLElement {
+    #draggable
     #bar
     #btn
+    #root
+    #initialRootX
+    #initialRootY
     constructor () {
       super()
 
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
 
+      this.#draggable = this.shadowRoot.querySelector('#draggable')
       this.#bar = this.shadowRoot.querySelector('#bar')
+      this.#root = this.shadowRoot.querySelector('#container-root')
       this.#btn = this.shadowRoot.querySelector('button')
       this.#btn.addEventListener('click', (event) => {
         this.shadowRoot.querySelector('#container-root').classList.toggle('fadeout')
         setTimeout(() => {
           this.parentElement.removeChild(this)
         }, 300)
+      })
+      this.#root.addEventListener('blur', (event) => {
+        this.style.zIndex = 0
+      })
+      this.#root.addEventListener('focus', (event) => {
+        this.style.zIndex = 100
       })
     }
 
@@ -101,12 +133,56 @@ customElements.define('comp-container',
 
     connectedCallback () {
       if (this.firstElementChild.options) {
-        console.log('hej');
         this.#createOptions()
       }
+      this.style.position = 'absolute'
+      this.#makeDraggable()
+      this.#root.tabIndex = 0
+    }
+
+    #makeDraggable () {
+      this.#initialRootX = 0
+      this.#initialRootY = 0
+      let moveElement = false
+
+      this.#bar.addEventListener('mousedown', (event) => {
+        this.#root.focus()
+        this.style.zIndex = 100
+        this.#initialRootX = event.clientX
+        this.#initialRootY = event.clientY
+        moveElement = true
+      })
+
+      this.#bar.addEventListener('mousemove', (event) => {
+        if (moveElement) {
+          event.preventDefault()
+
+          const rootX = event.clientX
+          const rootY = event.clientY
+
+          this.style.left = this.offsetLeft - (this.#initialRootX - rootX) + 'px'
+          this.style.top = this.offsetTop - (this.#initialRootY - rootY) + 'px'
+
+          this.#initialRootX = rootX
+          this.#initialRootY = rootY
+        }
+      })
+
+      this.#bar.addEventListener('mouseup', (event) => {
+        event.preventDefault()
+        moveElement = false
+      })
+
+      this.#bar.addEventListener('mouseleave', (event) => {
+        event.preventDefault()
+        moveElement = false
+      })
     }
 
     disconnectedCallback () {
+      this.#bar.removeEventListener('mousedown', this)
+      this.#bar.removeEventListener('mousemove', this)
+      this.#bar.removeEventListener('mouseup', this)
       this.querySelectorAll('select').forEach((select) => {
         select.removeEventListener('change')
       })

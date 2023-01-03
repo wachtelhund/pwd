@@ -3,6 +3,7 @@ html, body {
 	padding: 0;
 }
 body {
-	background: #b9e4ff;
+	background: linear-gradient(135deg, rgb(253, 188, 119), rgb(249, 113, 16));
+	background-attachment: fixed;
 	font-family: Verdana, sans-serif;
 }

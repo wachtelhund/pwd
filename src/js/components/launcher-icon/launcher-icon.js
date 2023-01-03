@@ -30,7 +30,7 @@ customElements.define('launcher-icon', class extends HTMLElement {
       const container = document.createElement('comp-container')
       const app = document.createElement(this.#type)
       container.appendChild(app)
-      document.body.appendChild(container)
+      this.parentElement.parentElement.insertBefore(container, this.parentElement)
     })
   }
 

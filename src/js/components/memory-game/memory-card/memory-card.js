@@ -100,6 +100,7 @@ customElements.define('memory-card',
     #flipCard (isFlipped) {
       if (isFlipped) {
         this.#img.setAttribute('src', `./images/memory-game/${this.#character}.png`)
+        this.#img.setAttribute('loading', 'lazy')
         this.#img.setAttribute('alt', this.#character)
       } else {
         this.#img.setAttribute('src', './images/memory-game/backside.png')
@@ -144,6 +145,7 @@ customElements.define('memory-card',
         throw new Error(`A character must be set using memory-card.character(character) for the card to display. Possible characters: ${this.#characters}`)
       }
       this.#img.setAttribute('src', './images/memory-game/backside.png')
+      this.#img.setAttribute('loading', 'lazy')
       this.#img.setAttribute('alt', 'backside')
       this.setAttribute('tabindex', '0')
     }

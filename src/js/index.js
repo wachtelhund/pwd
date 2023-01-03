@@ -3,6 +3,7 @@ import './components/comp-container/'
 import './components/app-dock/'
 import './components/launcher-icon/'
 import './components/get-joke/'
+import './components/desktop-comp/'
 /**
  * The main script file of the application.
  *

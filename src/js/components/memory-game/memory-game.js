@@ -215,11 +215,9 @@ customElements.define('memory-game',
           }, 700)
           this.#flippedCharacters = []
           if (this.#matchedCards.size === this.#activeCharacters.length) {
-            // TODO: Make player happy when he wins.
-            // Executes when player wins the game.
             setTimeout(() => {
               this.#cardContainer.classList.add('winner')
-              new Audio('./images/winner.mp3').play()
+              new Audio('./images/memory-game/winner.mp3').play()
             }, 500)
             clearInterval(this.#interval)
             this.#attemptsP.textContent = `You won in ${this.#attempts} attempts!`
