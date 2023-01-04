@@ -102,10 +102,10 @@ customElements.define('comp-container',
           this.parentElement.removeChild(this)
         }, 300)
       })
-      this.#root.addEventListener('blur', (event) => {
+      this.addEventListener('focusout', (event) => {
         this.style.zIndex = 0
       })
-      this.#root.addEventListener('focus', (event) => {
+      this.addEventListener('focusin', (event) => {
         this.style.zIndex = 100
       })
     }
@@ -137,7 +137,7 @@ customElements.define('comp-container',
       }
       this.style.position = 'absolute'
       this.#makeDraggable()
-      this.#root.tabIndex = 0
+      this.tabIndex = 0
     }
 
     #makeDraggable () {
@@ -146,7 +146,7 @@ customElements.define('comp-container',
       let moveElement = false
 
       this.#bar.addEventListener('mousedown', (event) => {
-        this.#root.focus()
+        this.focus()
         this.style.zIndex = 100
         this.#initialRootX = event.clientX
         this.#initialRootY = event.clientY
