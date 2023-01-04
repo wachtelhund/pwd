@@ -3,7 +3,7 @@ import './components/comp-container/'
 import './components/app-dock/'
 import './components/launcher-icon/'
 import './components/get-joke/'
-import './components/desktop-comp/'
+import './components/chat-app/'
 /**
  * The main script file of the application.
  *
@@ -27,9 +27,12 @@ container.appendChild(game)
 const dock = document.createElement('app-dock')
 const launcher = document.createElement('launcher-icon')
 const launcher2 = document.createElement('launcher-icon')
+const launcher3 = document.createElement('launcher-icon')
+launcher3.setAttribute('type', 'chat-app')
 launcher.setAttribute('type', 'memory-game')
 launcher2.setAttribute('type', 'get-joke')
 dock.appendChild(launcher)
 dock.appendChild(launcher2)
+dock.appendChild(launcher3)
 body.appendChild(container)
 body.appendChild(dock)

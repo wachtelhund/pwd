@@ -1,4 +1,3 @@
-//import interact from 'interactjs'
 const template = document.createElement('template')
 template.innerHTML = `
   <div id="container-root">
@@ -17,7 +16,7 @@ template.innerHTML = `
       border-radius: 5px;
       font-weight: bold;
       font-size: 24px;
-      background-color: rgba(47, 47, 47, 0.95);
+      background-color: rgba(95, 95, 95, 0.50);
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       color: white;
       padding: 10px;
@@ -37,6 +36,7 @@ template.innerHTML = `
     }
 
     #container-root {
+      background-color: white;
       position: absolute;
       margin: 10px;
       display: inline-block;
@@ -51,11 +51,13 @@ template.innerHTML = `
     }
 
     #bar {
+      background: linear-gradient(225deg, hsla(0, 0%, 25%, 1) 25%, hsla(0, 0%, 33%, 1) 52%, hsla(0, 0%, 76%, 1) 88%);
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      margin-bottom: 5px;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       display: flex;
       justify-content: flex-end;
-      background-color: rgba(205, 205, 205, 0.8);
       z-index: 10;
       width: 100%;
       height: min-content;
@@ -64,7 +66,6 @@ template.innerHTML = `
     #draggable {
       position: absolute;
       width: 100%;
-      background-color: rgba(205, 0, 0, 0.8);
     }
 
     .big {
