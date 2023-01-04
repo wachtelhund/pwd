@@ -1,6 +1,6 @@
 const template = document.createElement('template')
 template.innerHTML = `
-  <img/>
+  <img tabIndex="0"/>
   <style>
     img {
       width: 50px;
@@ -26,6 +26,11 @@ customElements.define('launcher-icon', class extends HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this.#img = this.shadowRoot.querySelector('img')
+    this.#img.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.target.click()
+      }
+    })
     this.#img.addEventListener('click', (event) => {
       const container = document.createElement('comp-container')
       const app = document.createElement(this.#type)
