@@ -8,7 +8,7 @@ template.innerHTML = `
     <div id="chat">
     </div>
     <form id="message">
-      <textarea id="messagebox" name="message" placeholder="Message" rows="3"></textarea>
+      <textarea maxlength="120" id="messagebox" name="message" placeholder="Message" rows="3"></textarea>
       <button type="submit">Send</button>
     </form>
   </div>
@@ -106,6 +106,9 @@ customElements.define('chat-app',
         event.preventDefault()
         if (event.target.id === 'username') {
           this.#username = event.target.username.value
+          localStorage.removeItem('username')
+          localStorage.setItem('username', this.#username)
+          this.#checkForUsername()
         } else if (event.target.id === 'message') {
           if (event.target.message.value !== '') {
             this.#sendMessage(event)
@@ -115,22 +118,12 @@ customElements.define('chat-app',
       this.#socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data)
         if (data.type === 'message') {
-          this.#receiveMessage(data)
+          console.log(this.#channel);
+          if ((this.#channel === 'broadcast' && !data.channel) || this.#channel === data.channel) {
+            this.#receiveMessage(data)
+          }
         }
       })
-    }
-
-    #retrieveUsername () {
-      const username = localStorage.getItem('username')
-      if (username) {
-        this.#username = username
-        return true
-      }
-      return false
-    }
-    
-    #storeUsername (username) {
-      localStorage.setItem('username', username)
     }
 
     #receiveMessage (data) {
@@ -170,6 +163,20 @@ customElements.define('chat-app',
       this.#socket.send(JSON.stringify(message))
     }
 
+    #checkForUsername () {
+      const username = localStorage.getItem('username')
+      if (username) {
+        this.#username = username
+        this.shadowRoot.querySelector('#messagebox').nextElementSibling.disabled = false
+        this.shadowRoot.querySelector('#messagebox').setAttribute('placeholder', 'Enter your message here.')
+        this.shadowRoot.querySelector('#username').style.display = 'none'
+        return true
+      }
+      this.shadowRoot.querySelector('#messagebox').nextElementSibling.disabled = true
+      this.shadowRoot.querySelector('#messagebox').setAttribute('placeholder', 'Please enter a username before entering the chat.')
+      return false
+    }
+
     get options () {
       return {
         channel: ['broadcast', 'study', 'gaming']
@@ -187,14 +194,7 @@ customElements.define('chat-app',
     }
 
     connectedCallback () {
-      if (!this.#retrieveUsername()) {
-        this.shadowRoot.querySelector('#messagebox').nextElementSibling.disabled = true
-        this.shadowRoot.querySelector('#messagebox').setAttribute('placeholder', 'Please enter a username before entering the chat.')
-        console.log('no username found');
-      } else {
-        this.shadowRoot.querySelector('#messagebox').nextElementSibling.disabled = false
-        this.shadowRoot.querySelector('#messagebox').setAttribute('placeholder', 'Enter your message here.')
-      }
+      this.#checkForUsername()
       this.#channel = this.getAttribute('channel') || 'broadcast'
       this.setAttribute('channel', 'all')
     }
