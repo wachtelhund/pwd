@@ -23,10 +23,25 @@ template.innerHTML = `
     }
   </style>
 `
-customElements.define('app-dock', class extends HTMLElement {
-  constructor () {
-    super()
-    this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(template.content.cloneNode(true))
-  }
-})
+/**
+ * Custom element for a dock.
+ *
+ * Extends the HTMLElement class to create a custom element that can be used in HTML as a dock.
+ */
+customElements.define('app-dock',
+  /**
+   * Custom element for a dock.
+   *
+   * Extends the HTMLElement class to create a custom element that can be used in HTML as a dock.
+   */
+  class extends HTMLElement {
+    /**
+     * The constructor for the app-dock custom element.
+     * It attaches the shadow DOM to the element and appends the template content to it.
+     */
+    constructor () {
+      super()
+      this.attachShadow({ mode: 'open' })
+      this.shadowRoot.appendChild(template.content.cloneNode(true))
+    }
+  })

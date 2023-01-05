@@ -80,20 +80,65 @@ template.innerHTML = `
   </style>
 `
 customElements.define('comp-container',
+  /**
+   * Custom element for a draggable and closable container.
+   *
+   * Extends the HTMLElement class to create a custom element that can be used in HTML as a self-contained
+   * container that can be dragged and closed by clicking a button.
+   */
   class extends HTMLElement {
-    #draggable
+    /**
+     * The element that contains the close button.
+     *
+     * @type {HTMLElement}
+     * @private
+     */
     #bar
+
+    /**
+     * The close button element.
+     *
+     * @type {HTMLElement}
+     * @private
+     */
     #btn
+
+    /**
+     * The root element of the container.
+     *
+     * @type {HTMLElement}
+     * @private
+     */
     #root
+
+    /**
+     * The initial X position of the root element.
+     *
+     * @type {number}
+     * @private
+     */
     #initialRootX
+
+    /**
+     * The initial X position of the root element.
+     *
+     * @type {number}
+     * @private
+     */
     #initialRootY
+
+    /**
+     * Constructor for the custom element.
+     *
+     * Initializes the custom element by setting up the shadow root and adding event
+     * listeners to the close button and the container element.
+     */
     constructor () {
       super()
 
       this.attachShadow({ mode: 'open' })
         .appendChild(template.content.cloneNode(true))
 
-      this.#draggable = this.shadowRoot.querySelector('#draggable')
       this.#bar = this.shadowRoot.querySelector('#bar')
       this.#root = this.shadowRoot.querySelector('#container-root')
       this.#btn = this.shadowRoot.querySelector('button')
@@ -111,6 +156,12 @@ customElements.define('comp-container',
       })
     }
 
+    /**
+     * Creates options from the first child element's 'options' attribute and
+     * appends them to the component's top bar.
+     * Each option has a corresponding select element, and the selected option will be set as
+     * the first child element's attribute.
+     */
     #createOptions () {
       for (const [optionName, options] of Object.entries(this.firstElementChild.options)) {
         const select = document.createElement('select')
@@ -132,6 +183,11 @@ customElements.define('comp-container',
       }
     }
 
+    /**
+     * This function is called when the custom element is inserted into the DOM. If the first child element has options
+     * defined, it creates those options as select elements in the component's bar.
+     * It also sets the element's position to absolute, makes it draggable, and sets the tabIndex to 0.
+     */
     connectedCallback () {
       if (this.firstElementChild.options) {
         this.#createOptions()
@@ -141,6 +197,11 @@ customElements.define('comp-container',
       this.tabIndex = 0
     }
 
+    /**
+     * Makes the element draggable by adding mouse event listeners to the element's bar.
+     * When the bar is clicked and held, the element can be moved around the screen by dragging it.
+     * When the bar is released, the element will stay in its new position.
+     */
     #makeDraggable () {
       this.#initialRootX = 0
       this.#initialRootY = 0
@@ -180,6 +241,9 @@ customElements.define('comp-container',
       })
     }
 
+    /**
+     * Removes event listeners when the element is removed from the DOM.
+     */
     disconnectedCallback () {
       this.#bar.removeEventListener('mousedown', this)
       this.#bar.removeEventListener('mousemove', this)

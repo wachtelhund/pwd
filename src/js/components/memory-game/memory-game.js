@@ -109,6 +109,11 @@ customElements.define('memory-game',
      * and adds event listeners for clicking on cards and resetting the game.
      */
     #interval
+    /**
+     * The constructor for the memory-game custom element.
+     * It attaches the shadow DOM to the element, appends the template content to it,
+     * and adds event listeners. It also sets up an array or possible characters.
+     */
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
@@ -142,6 +147,11 @@ customElements.define('memory-game',
       })
     }
 
+    /**
+     * Timer that tells use the time it took to complete the game.
+     *
+     * @returns {string} - Interval id that is used to clear the timer.
+     */
     #timer () {
       const timer = this.shadowRoot.querySelector('#timer')
       timer.textContent = 'Time: 0'
