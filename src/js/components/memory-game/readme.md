@@ -1,20 +1,15 @@
-# memory-game component
+# memory-game
 
 The memory-game component is a web component used to play memory.
-
-## Installation
-
-Use npm to install dependencies.
-
-```bash
-npm i
-```
 
 ## Usage
 This component is dependant on the memory-card component.
 ```javascript
-import '<path>/memory-game/
+import '<path>/memory-card'
+import '<path>/memory-game/'
 ```
+## Attributes
+#### size
 To decide which size you'd like to play the game in you can set the attribute size.
 You can choose between sm, md and lg.
 ```javascript
@@ -25,4 +20,3 @@ or
 ```HTML
 <memory-game size="lg"></memory-game>
 ```
-Once in the dom, simply try and match the different characters with eachother.
