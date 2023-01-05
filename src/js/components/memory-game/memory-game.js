@@ -1,5 +1,6 @@
 /**
  * @author Hampus Nilsson <hn222te@student.lnu.se>
+ *
  * @version 1.0.0
  */
 import './memory-card/'

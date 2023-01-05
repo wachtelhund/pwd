@@ -1,3 +1,9 @@
+/**
+ * Chat app component.
+ *
+ * @author Hampus Nilsson <hn222te@student.lnu.se>
+ * @version 1.0.0
+ */
 const template = document.createElement('template')
 template.innerHTML = `
   <div id="root">

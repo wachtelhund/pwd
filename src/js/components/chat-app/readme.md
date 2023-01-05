@@ -1,6 +1,6 @@
 # chat-app
 
-An application that enables chatting through a specific web socket.
+An application that enables chatting through a specific web socket. It stores the username in local storage.
 
 ## Example
 

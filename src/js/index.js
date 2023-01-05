@@ -20,19 +20,23 @@ if ('serviceWorker' in navigator) {
     }
   })
 }
-const body = document.querySelector('body')
-const game = document.createElement('memory-game')
-const container = document.createElement('comp-container')
-container.appendChild(game)
-const dock = document.createElement('app-dock')
-const launcher = document.createElement('launcher-icon')
-const launcher2 = document.createElement('launcher-icon')
-const launcher3 = document.createElement('launcher-icon')
-launcher3.setAttribute('type', 'chat-app')
-launcher.setAttribute('type', 'memory-game')
-launcher2.setAttribute('type', 'get-joke')
-dock.appendChild(launcher)
-dock.appendChild(launcher2)
-dock.appendChild(launcher3)
-body.appendChild(container)
-body.appendChild(dock)
+
+/**
+ * Launch the application.
+ */
+function main () {
+  const body = document.querySelector('body')
+  const dock = document.createElement('app-dock')
+  const memoryLauncher = document.createElement('launcher-icon')
+  const jokeLauncher = document.createElement('launcher-icon')
+  const chatLauncher = document.createElement('launcher-icon')
+  memoryLauncher.setAttribute('type', 'memory-game')
+  jokeLauncher.setAttribute('type', 'get-joke')
+  chatLauncher.setAttribute('type', 'chat-app')
+  dock.appendChild(memoryLauncher)
+  dock.appendChild(jokeLauncher)
+  dock.appendChild(chatLauncher)
+  body.appendChild(dock)
+}
+
+main()
