@@ -294,7 +294,7 @@ customElements.define('chat-app',
     connectedCallback () {
       this.#checkForUsername()
       this.#channel = this.getAttribute('channel') || 'broadcast'
-      this.setAttribute('channel', 'all')
+      this.setAttribute('channel', this.#channel)
     }
 
     /**
